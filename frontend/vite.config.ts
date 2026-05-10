@@ -11,7 +11,7 @@ export default defineConfig({
       name: 'taximetro_app',
       filename: 'remoteEntry.js',
       exposes: {
-        './TaximetroWidget': './src/App.tsx', 
+        './TaximetroWidget': './src/pages/Taximetro/Taximetro.tsx',
       },
       shared: ['react', 'react-dom']
     })
