@@ -1,0 +1,29 @@
+services:
+  taximetro_backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: docker.io/${DOCKER_USERNAME:-tu_usuario}/taximetro:backend-latest
+    container_name: mfe_taximetro_backend
+    ports:
+      - "8002:8000"
+    restart: always
+    environment:
+      - TARIFA_PARADO=${TARIFA_PARADO:-0.02}
+      - TARIFA_MOVIMIENTO=${TARIFA_MOVIMIENTO:-0.05}
+      - DATABASE_URL=${DATABASE_URL}
+      - CORE_API_URL=${CORE_API_URL}
+
+  taximetro_frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL:-http://localhost:8002}
+    image: docker.io/${DOCKER_USERNAME:-tu_usuario}/taximetro:frontend-latest
+    container_name: mfe_taximetro_frontend
+    ports:
+      - "3002:80"
+    depends_on:
+      - taximetro_backend
+    restart: always

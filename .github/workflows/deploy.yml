@@ -1,0 +1,60 @@
+name: Deploy Taximetro MFE to EC2
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: TAXIMETRO 
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and Push Backend
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/taximetro-backend:latest ./backend
+          docker push ${{ secrets.DOCKER_USERNAME }}/taximetro-backend:latest
+
+      - name: Build and Push Frontend
+        run: |
+          docker build --build-arg VITE_API_URL="${{ secrets.VITE_API_URL }}" -t ${{ secrets.DOCKER_USERNAME }}/taximetro-frontend:latest ./frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/taximetro-frontend:latest
+
+      - name: Setup SSH key
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" > ec2_key.pem
+          chmod 600 ec2_key.pem
+
+      - name: Deploy on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ec2_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+            
+            docker container stop mfe_taximetro_backend mfe_taximetro_frontend || true
+            docker container rm mfe_taximetro_backend mfe_taximetro_frontend || true
+            docker image rm ${{ secrets.DOCKER_USERNAME }}/taximetro-backend:latest ${{ secrets.DOCKER_USERNAME }}/taximetro-frontend:latest || true
+            
+            docker pull ${{ secrets.DOCKER_USERNAME }}/taximetro-backend:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/taximetro-frontend:latest
+            
+            docker run -d --name mfe_taximetro_backend \
+              -p 8002:8000 \
+              -e TARIFA_PARADO="${{ secrets.TARIFA_PARADO }}" \
+              -e TARIFA_MOVIMIENTO="${{ secrets.TARIFA_MOVIMIENTO }}" \
+              -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+              -e CORE_API_URL="${{ secrets.CORE_API_URL }}" \
+              --restart unless-stopped \
+              ${{ secrets.DOCKER_USERNAME }}/taximetro-backend:latest
+            
+            docker run -d --name mfe_taximetro_frontend \
+              -p 3002:80 \
+              --restart unless-stopped \
+              ${{ secrets.DOCKER_USERNAME }}/taximetro-frontend:latest
+          EOF
