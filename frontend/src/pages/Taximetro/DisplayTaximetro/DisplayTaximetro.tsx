@@ -89,7 +89,7 @@ export default function DisplayTaximetro({
             </span>
             <span className="text-lg font-mono font-black text-amber-600">
               {costoMovimiento.toFixed(2)}€
-            </span>
+            </span>obtener_estado_actual
           </div>
         </div>
       </div>
