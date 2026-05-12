@@ -40,6 +40,10 @@ export default function Taximetro() {
   const total = taximetroData?.total_actual || 0;
   const mensaje = taximetroData?.mensaje || "Taxímetro listo para iniciar.";
   const tiempoSegundos = taximetroData?.tiempo_segundos || 0;
+  const tiempoParado = taximetroData?.tiempo_parado || 0;
+  const tiempoMovimiento = taximetroData?.tiempo_movimiento || 0;
+  const costoParado = taximetroData?.costo_parado || 0;
+  const costoMovimiento = taximetroData?.costo_movimiento || 0;
 
   return (
     <div className="w-full max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 mt-4 md:mt-0 relative">
@@ -100,6 +104,10 @@ export default function Taximetro() {
               total={total}
               enTrayecto={enTrayecto}
               tiempoSegundos={tiempoSegundos}
+              tiempoParado={tiempoParado}
+              tiempoMovimiento={tiempoMovimiento}
+              costoParado={costoParado}
+              costoMovimiento={costoMovimiento}
             />
 
             <ControlesTaximetro
