@@ -5,6 +5,7 @@ class TaxiEstadoResponse(BaseModel):
     en_trayecto: bool
     total_actual: float
     mensaje: str
+    tiempo_segundos: float
 
 class CambiarEstadoRequest(BaseModel):
     nuevo_estado: str

@@ -1,4 +1,3 @@
-# backend/taximetro_core.py
 import time
 import config
 
@@ -10,6 +9,7 @@ class Taximetro:
         self.en_trayecto = False
         self.total_euros = 0.0
         self.tiempo_inicio_estado = 0
+        self.tiempo_total_segundos = 0.0 
 
     def iniciar_trayecto(self):
         if self.en_trayecto:
@@ -17,6 +17,7 @@ class Taximetro:
         self.en_trayecto = True
         self.estado = "PARADO"
         self.total_euros = 0.0
+        self.tiempo_total_segundos = 0.0 
         self.tiempo_inicio_estado = time.time()
         return "Trayecto iniciado. El taxi está PARADO."
 
@@ -33,6 +34,8 @@ class Taximetro:
 
     def _acumular_tarifa(self):
         tiempo_transcurrido = time.time() - self.tiempo_inicio_estado
+        self.tiempo_total_segundos += tiempo_transcurrido 
+
         if self.estado == "PARADO":
             self.total_euros += tiempo_transcurrido * self.tarifa_parado
         elif self.estado == "MOVIMIENTO":

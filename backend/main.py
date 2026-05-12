@@ -27,7 +27,8 @@ def iniciar_trayecto():
         estado=taxi.estado,
         en_trayecto=taxi.en_trayecto,
         total_actual=taxi.total_euros,
-        mensaje=mensaje
+        mensaje=mensaje,
+        tiempo_segundos=taxi.tiempo_total_segundos
     )
 
 @app.put("/trayecto/estado", response_model=TaxiEstadoResponse)
@@ -36,13 +37,13 @@ def cambiar_estado(request: CambiarEstadoRequest):
         raise HTTPException(status_code=400, detail="Estado no válido")
     
     mensaje = taxi.cambiar_estado(request.nuevo_estado)
-    taxi._acumular_tarifa()
     
     return TaxiEstadoResponse(
         estado=taxi.estado,
         en_trayecto=taxi.en_trayecto,
         total_actual=round(taxi.total_euros, 2),
-        mensaje=mensaje
+        mensaje=mensaje,
+        tiempo_segundos=taxi.tiempo_total_segundos
     )
 
 @app.post("/trayecto/finalizar")
@@ -50,8 +51,14 @@ def finalizar_trayecto():
     if not taxi.en_trayecto:
         raise HTTPException(status_code=400, detail="No hay trayecto activo")
     
+    tiempo_final = taxi.tiempo_total_segundos
     mensaje = taxi.finalizar_trayecto()
-    return {"mensaje": mensaje, "total_cobrado": round(taxi.total_euros, 2)}
+    
+    return {
+        "mensaje": mensaje, 
+        "total_cobrado": round(taxi.total_euros, 2),
+        "tiempo_total_segundos": round(tiempo_final, 2)
+    }
 
 @app.get("/trayecto/actual", response_model=TaxiEstadoResponse)
 def obtener_estado_actual():
@@ -62,5 +69,6 @@ def obtener_estado_actual():
         estado=taxi.estado,
         en_trayecto=taxi.en_trayecto,
         total_actual=round(taxi.total_euros, 2),
-        mensaje="Estado actualizado"
+        mensaje="Estado actualizado",
+        tiempo_segundos=taxi.tiempo_total_segundos
     )

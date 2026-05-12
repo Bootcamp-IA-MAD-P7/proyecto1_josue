@@ -3,6 +3,7 @@ export interface TaxiEstadoResponse {
   en_trayecto: boolean;
   total_actual: number;
   mensaje: string;
+  tiempo_segundos: number;
 }
 
 export interface CambiarEstadoRequest {
