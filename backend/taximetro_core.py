@@ -37,6 +37,8 @@ class Taximetro:
             self.total_euros += tiempo_transcurrido * self.tarifa_parado
         elif self.estado == "MOVIMIENTO":
             self.total_euros += tiempo_transcurrido * self.tarifa_movimiento
+            
+        self.tiempo_inicio_estado = time.time()
 
     def finalizar_trayecto(self):
         if not self.en_trayecto:
