@@ -7,17 +7,31 @@ class Taximetro:
         self.tarifa_movimiento = config.TARIFA_MOVIMIENTO
         self.estado = "PARADO"
         self.en_trayecto = False
+        
+        self.tiempo_total_segundos = 0.0
+        self.tiempo_parado_segundos = 0.0
+        self.tiempo_movimiento_segundos = 0.0
+        
         self.total_euros = 0.0
+        self.costo_parado_euros = 0.0
+        self.costo_movimiento_euros = 0.0
+        
         self.tiempo_inicio_estado = 0
-        self.tiempo_total_segundos = 0.0 
 
     def iniciar_trayecto(self):
         if self.en_trayecto:
             return "El trayecto ya está en curso."
         self.en_trayecto = True
         self.estado = "PARADO"
+        
+        self.tiempo_total_segundos = 0.0
+        self.tiempo_parado_segundos = 0.0
+        self.tiempo_movimiento_segundos = 0.0
+        
         self.total_euros = 0.0
-        self.tiempo_total_segundos = 0.0 
+        self.costo_parado_euros = 0.0
+        self.costo_movimiento_euros = 0.0
+        
         self.tiempo_inicio_estado = time.time()
         return "Trayecto iniciado. El taxi está PARADO."
 
@@ -34,13 +48,17 @@ class Taximetro:
 
     def _acumular_tarifa(self):
         tiempo_transcurrido = time.time() - self.tiempo_inicio_estado
-        self.tiempo_total_segundos += tiempo_transcurrido 
+        self.tiempo_total_segundos += tiempo_transcurrido
 
         if self.estado == "PARADO":
-            self.total_euros += tiempo_transcurrido * self.tarifa_parado
+            self.tiempo_parado_segundos += tiempo_transcurrido
+            self.costo_parado_euros += tiempo_transcurrido * self.tarifa_parado
         elif self.estado == "MOVIMIENTO":
-            self.total_euros += tiempo_transcurrido * self.tarifa_movimiento
+            self.tiempo_movimiento_segundos += tiempo_transcurrido
+            self.costo_movimiento_euros += tiempo_transcurrido * self.tarifa_movimiento
             
+        self.total_euros = self.costo_parado_euros + self.costo_movimiento_euros
+        
         self.tiempo_inicio_estado = time.time()
 
     def finalizar_trayecto(self):
@@ -49,5 +67,4 @@ class Taximetro:
         
         self._acumular_tarifa()
         self.en_trayecto = False
-        total_final = round(self.total_euros, 2)
-        return f"Trayecto finalizado. Total a cobrar: {total_final} €"
+        return f"Trayecto finalizado. Total a cobrar: {round(self.total_euros, 2)} €"

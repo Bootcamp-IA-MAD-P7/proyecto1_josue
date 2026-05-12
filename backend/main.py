@@ -26,9 +26,13 @@ def iniciar_trayecto():
     return TaxiEstadoResponse(
         estado=taxi.estado,
         en_trayecto=taxi.en_trayecto,
-        total_actual=taxi.total_euros,
+        total_actual=round(taxi.total_euros, 2),
         mensaje=mensaje,
-        tiempo_segundos=taxi.tiempo_total_segundos
+        tiempo_segundos=taxi.tiempo_total_segundos,
+        tiempo_parado=taxi.tiempo_parado_segundos,
+        tiempo_movimiento=taxi.tiempo_movimiento_segundos,
+        costo_parado=round(taxi.costo_parado_euros, 2),
+        costo_movimiento=round(taxi.costo_movimiento_euros, 2)
     )
 
 @app.put("/trayecto/estado", response_model=TaxiEstadoResponse)
@@ -42,8 +46,12 @@ def cambiar_estado(request: CambiarEstadoRequest):
         estado=taxi.estado,
         en_trayecto=taxi.en_trayecto,
         total_actual=round(taxi.total_euros, 2),
-        mensaje=mensaje,
-        tiempo_segundos=taxi.tiempo_total_segundos
+        mensaje=mensaje, 
+        tiempo_segundos=taxi.tiempo_total_segundos,
+        tiempo_parado=taxi.tiempo_parado_segundos,
+        tiempo_movimiento=taxi.tiempo_movimiento_segundos,
+        costo_parado=round(taxi.costo_parado_euros, 2),
+        costo_movimiento=round(taxi.costo_movimiento_euros, 2)
     )
 
 @app.post("/trayecto/finalizar")
@@ -69,6 +77,10 @@ def obtener_estado_actual():
         estado=taxi.estado,
         en_trayecto=taxi.en_trayecto,
         total_actual=round(taxi.total_euros, 2),
-        mensaje="Estado actualizado",
-        tiempo_segundos=taxi.tiempo_total_segundos
+        mensaje=mensaje,
+        tiempo_segundos=taxi.tiempo_total_segundos,
+        tiempo_parado=taxi.tiempo_parado_segundos,
+        tiempo_movimiento=taxi.tiempo_movimiento_segundos,
+        costo_parado=round(taxi.costo_parado_euros, 2),
+        costo_movimiento=round(taxi.costo_movimiento_euros, 2)
     )
