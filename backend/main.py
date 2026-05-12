@@ -77,7 +77,7 @@ def obtener_estado_actual():
         estado=taxi.estado,
         en_trayecto=taxi.en_trayecto,
         total_actual=round(taxi.total_euros, 2),
-        mensaje=mensaje,
+        mensaje="Estado actualizado",
         tiempo_segundos=taxi.tiempo_total_segundos,
         tiempo_parado=taxi.tiempo_parado_segundos,
         tiempo_movimiento=taxi.tiempo_movimiento_segundos,
