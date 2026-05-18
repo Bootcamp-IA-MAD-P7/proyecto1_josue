@@ -46,7 +46,7 @@ export default function Taximetro() {
   const costoMovimiento = taximetroData?.costo_movimiento || 0;
 
   return (
-    <div id="taximetro-aislado" className="w-full h-full">
+    <div id="taximetro-mf" className="w-full h-full">
       <div className="w-full max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 mt-4 md:mt-0 relative">
         {" "}
         <div className="flex border-b border-slate-200">
