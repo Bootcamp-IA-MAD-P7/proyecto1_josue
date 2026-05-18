@@ -52,6 +52,7 @@ El proyecto requiere las siguientes variables configuradas en archivos `.env` o 
 Para levantar el entorno local completo:
 ```bash
 docker-compose up --build
+```
 
 ## 🚀 Entornos Desplegados (En Vivo)
 
