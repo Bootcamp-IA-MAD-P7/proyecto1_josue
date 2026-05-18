@@ -65,4 +65,4 @@ El ecosistema está desplegado en AWS (EC2) utilizando contenedores Docker. A co
 
 ### 🚕 Módulo Taxímetro (Microfrontend)
 - **Frontend Standalone (MFE):** [http://34.235.130.33:3002](http://34.235.130.33:3002)
-- **Backend API (Python) - *En desarrollo*:** Próximamente (Puerto 8002)
+- **Backend API (Python) - *En desarrollo*:** [http://34.235.130.33:8002/docs](http://34.235.130.33:8002/docs)
