@@ -38,3 +38,8 @@ export interface TarifaResponse {
   costo_por_segundo: number;
   fecha_actualizacion: string;
 }
+
+export interface ActualizarTarifasRequest {
+  tarifa_id: number;
+  costo_por_segundo: number;
+}

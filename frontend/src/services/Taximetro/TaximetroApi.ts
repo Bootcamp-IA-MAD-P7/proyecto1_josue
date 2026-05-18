@@ -1,6 +1,7 @@
 // src/services/Taximetro/TaximetroApi.ts
 import { api } from "../../api/axiosClient";
 import type {
+  ActualizarTarifasRequest,
   CambiarEstadoRequest,
   FinalizarTrayectoResponse,
   TarifaResponse,
@@ -37,6 +38,11 @@ export class TaximetroApi implements TaximetroRepository {
 
   async obtenerTarifas(): Promise<TarifaResponse[]> {
     const response = await api.get<TarifaResponse[]>("/tarifas");
+    return response.data;
+  }
+
+  async actualizarTarifas(data: ActualizarTarifasRequest[]): Promise<{mensaje: string}> {
+    const response = await api.put<{mensaje: string}>("/tarifas", data);
     return response.data;
   }
 }

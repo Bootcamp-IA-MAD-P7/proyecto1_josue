@@ -1,5 +1,6 @@
 // src/services/Taximetro/TaximetroRepository.ts
 import type {
+  ActualizarTarifasRequest,
   CambiarEstadoRequest,
   FinalizarTrayectoResponse,
   TarifaResponse,
@@ -14,4 +15,5 @@ export interface TaximetroRepository {
   obtenerEstadoActual(): Promise<TaxiEstadoResponse>;
   obtenerHistorial(): Promise<ViajeResponse[]>;
   obtenerTarifas(): Promise<TarifaResponse[]>;
+  actualizarTarifas(data: ActualizarTarifasRequest[]): Promise<{mensaje: string}>;
 }

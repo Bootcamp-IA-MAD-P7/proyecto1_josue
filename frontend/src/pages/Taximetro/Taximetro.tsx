@@ -134,7 +134,12 @@ export default function Taximetro() {
 
         {mostrarInfo && <ModalInfo setMostrarInfo={setMostrarInfo} />}
         {mostrarHistorial && <HistorialModal onClose={() => setMostrarHistorial(false)} />}
-        {mostrarConfiguracion && <ConfiguracionModal onClose={() => setMostrarConfiguracion(false)} />}
+        {mostrarConfiguracion && (
+          <ConfiguracionModal 
+            onClose={() => setMostrarConfiguracion(false)} 
+            enTrayecto={enTrayecto} 
+          />
+        )}
         
       </div>
     </div>

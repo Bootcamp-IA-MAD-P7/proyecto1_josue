@@ -9,6 +9,9 @@ from models_db import Viaje, Tarifa
 from taximetro_core import Taximetro
 from models import TaxiEstadoResponse, CambiarEstadoRequest
 
+from pydantic import BaseModel
+from typing import List
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="API Taxímetro - Factoría 5")
@@ -22,6 +25,10 @@ app.add_middleware(
 )
 
 taxi = Taximetro()
+
+class TarifaUpdate(BaseModel):
+    tarifa_id: int
+    costo_por_segundo: float
 
 @app.get("/")
 def health_check():
@@ -98,3 +105,18 @@ def obtener_historial(db: Session = Depends(get_db)):
 def obtener_tarifas(db: Session = Depends(get_db)):
     tarifas = db.query(Tarifa).all()
     return tarifas
+
+@app.put("/tarifas")
+def actualizar_tarifas(tarifas: List[TarifaUpdate], db: Session = Depends(get_db)):
+    for t in tarifas:
+        tarifa_db = db.query(Tarifa).filter(Tarifa.tarifa_id == t.tarifa_id).first()
+        if tarifa_db:
+            tarifa_db.costo_por_segundo = t.costo_por_segundo
+            
+            if tarifa_db.estado_vehiculo == "PARADO":
+                taxi.tarifa_parado = float(t.costo_por_segundo)
+            elif tarifa_db.estado_vehiculo == "MOVIMIENTO":
+                taxi.tarifa_movimiento = float(t.costo_por_segundo)
+    
+    db.commit()
+    return {"mensaje": "Tarifas actualizadas correctamente"}

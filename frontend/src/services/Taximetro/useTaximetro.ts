@@ -1,6 +1,6 @@
 // src/services/Taximetro/useTaximetro.ts
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { CambiarEstadoRequest } from "../../models/Taximetro";
+import type { ActualizarTarifasRequest, CambiarEstadoRequest } from "../../models/Taximetro";
 import { TaximetroApi } from "./TaximetroApi";
 
 const taximetroApi = new TaximetroApi();
@@ -65,5 +65,16 @@ export const useObtenerTarifas = () => {
   return useQuery({
     queryKey: TAXIMETRO_KEYS.tarifas(),
     queryFn: () => taximetroApi.obtenerTarifas(),
+  });
+};
+
+export const useActualizarTarifas = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: ActualizarTarifasRequest[]) => taximetroApi.actualizarTarifas(data),
+    onSuccess: () => {
+      // Recargamos las tarifas al terminar de actualizar
+      queryClient.invalidateQueries({ queryKey: TAXIMETRO_KEYS.tarifas() });
+    },
   });
 };
