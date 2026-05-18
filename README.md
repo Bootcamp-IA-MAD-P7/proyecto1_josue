@@ -52,3 +52,16 @@ El proyecto requiere las siguientes variables configuradas en archivos `.env` o 
 Para levantar el entorno local completo:
 ```bash
 docker-compose up --build
+
+## 🚀 Entornos Desplegados (En Vivo)
+
+El ecosistema está desplegado en AWS (EC2) utilizando contenedores Docker. A continuación se encuentran los enlaces de acceso a las diferentes piezas de la arquitectura:
+
+### 🏢 Factoría Core (Host Principal)
+- **Frontend (App Shell / Workspace):** [http://34.235.130.33:3003/login](http://34.235.130.33:3003/login)
+  - *Nota:* Desde el Workspace se inyecta dinámicamente el Microfrontend del Taxímetro.
+- **Backend API (C# .NET 8/10) - Swagger UI:** [http://34.235.130.33:5073/swagger/index.html](http://34.235.130.33:5073/swagger/index.html)
+
+### 🚕 Módulo Taxímetro (Microfrontend)
+- **Frontend Standalone (MFE):** [http://34.235.130.33:3002](http://34.235.130.33:3002)
+- **Backend API (Python) - *En desarrollo*:** Próximamente (Puerto 8002)
