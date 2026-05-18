@@ -13,7 +13,7 @@ export default defineConfig({
       exposes: {
         './TaximetroWidget': './src/pages/Taximetro/Taximetro.tsx',
       },
-      shared: ['react', 'react-dom']
+      shared: ['react', 'react-dom', 'react-router-dom', '@tanstack/react-query']
     })
   ],
   server: {
@@ -22,6 +22,11 @@ export default defineConfig({
     watch: {
       usePolling: true,
     }
+  },
+  preview: {
+    port: 3002,
+    host: true,
+    strictPort: true,
   },
   build: {
     modulePreload: false,
