@@ -8,6 +8,8 @@ const taximetroApi = new TaximetroApi();
 export const TAXIMETRO_KEYS = {
   all: ["taximetro"] as const,
   estadoActual: () => [...TAXIMETRO_KEYS.all, "estadoActual"] as const,
+  historial: () => [...TAXIMETRO_KEYS.all, "historial"] as const,
+  tarifas: () => [...TAXIMETRO_KEYS.all, "tarifas"] as const,  
 };
 
 export const useObtenerEstadoActual = (enTrayecto: boolean) => {
@@ -49,5 +51,19 @@ export const useFinalizarTrayecto = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: TAXIMETRO_KEYS.estadoActual() });
     },
+  });
+};
+
+export const useObtenerHistorial = () => {
+  return useQuery({
+    queryKey: TAXIMETRO_KEYS.historial(),
+    queryFn: () => taximetroApi.obtenerHistorial(),
+  });
+};
+
+export const useObtenerTarifas = () => {
+  return useQuery({
+    queryKey: TAXIMETRO_KEYS.tarifas(),
+    queryFn: () => taximetroApi.obtenerTarifas(),
   });
 };

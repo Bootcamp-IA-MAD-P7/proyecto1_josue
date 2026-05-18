@@ -18,3 +18,23 @@ export interface FinalizarTrayectoResponse {
   mensaje: string;
   total_cobrado: number;
 }
+
+export interface ViajeResponse {
+  viaje_id: number;
+  usuario_id: number;
+  fecha_inicio: string;
+  fecha_fin: string;
+  tiempo_total_segundos: number;
+  tiempo_parado_segundos: number;
+  tiempo_movimiento_segundos: number;
+  costo_total: number;
+  estado_viaje: string;
+  fecha_registro: string;
+}
+
+export interface TarifaResponse {
+  tarifa_id: number;
+  estado_vehiculo: string;
+  costo_por_segundo: number;
+  fecha_actualizacion: string;
+}

@@ -3,7 +3,9 @@ import { api } from "../../api/axiosClient";
 import type {
   CambiarEstadoRequest,
   FinalizarTrayectoResponse,
-  TaxiEstadoResponse
+  TarifaResponse,
+  TaxiEstadoResponse,
+  ViajeResponse
 } from "../../models/Taximetro";
 import type { TaximetroRepository } from "./TaximetroRepository";
 
@@ -25,6 +27,16 @@ export class TaximetroApi implements TaximetroRepository {
 
   async obtenerEstadoActual(): Promise<TaxiEstadoResponse> {
     const response = await api.get<TaxiEstadoResponse>("/trayecto/actual");
+    return response.data;
+  }
+
+  async obtenerHistorial(): Promise<ViajeResponse[]> {
+    const response = await api.get<ViajeResponse[]>("/historial");
+    return response.data;
+  }
+
+  async obtenerTarifas(): Promise<TarifaResponse[]> {
+    const response = await api.get<TarifaResponse[]>("/tarifas");
     return response.data;
   }
 }

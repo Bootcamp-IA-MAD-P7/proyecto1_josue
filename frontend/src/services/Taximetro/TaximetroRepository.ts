@@ -2,7 +2,9 @@
 import type {
   CambiarEstadoRequest,
   FinalizarTrayectoResponse,
-  TaxiEstadoResponse
+  TarifaResponse,
+  TaxiEstadoResponse,
+  ViajeResponse
 } from "../../models/Taximetro";
 
 export interface TaximetroRepository {
@@ -10,4 +12,6 @@ export interface TaximetroRepository {
   cambiarEstado(data: CambiarEstadoRequest): Promise<TaxiEstadoResponse>;
   finalizarTrayecto(): Promise<FinalizarTrayectoResponse>;
   obtenerEstadoActual(): Promise<TaxiEstadoResponse>;
+  obtenerHistorial(): Promise<ViajeResponse[]>;
+  obtenerTarifas(): Promise<TarifaResponse[]>;
 }

@@ -5,6 +5,9 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   important: '#taximetro-mf',
+  corePlugins: {
+    preflight: false,
+  },
   theme: {
     extend: {},
   },
